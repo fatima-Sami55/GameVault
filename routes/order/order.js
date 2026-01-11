@@ -146,7 +146,6 @@ router.get('/', async (req, res) => {
 });
 
 // Show order confirmation after payment
-// Show order confirmation after payment
 router.get('/confirmation/:billId', async (req, res) => {
     const userId = req.session.user?.uuid;
     const billId = req.params.billId;
@@ -233,7 +232,7 @@ router.get('/confirmation/:billId', async (req, res) => {
             items
         });
 
-         // ✅ Step 1.5: Clear the cart after order confirmation
+         // ✅ Step 6: Clear the cart after order confirmation
          const currentCartResult = await pool.request()
          .input('userId', sql.UniqueIdentifier, userId)
          .query(`
