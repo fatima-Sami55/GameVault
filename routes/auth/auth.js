@@ -51,7 +51,7 @@ router.get('/admin-dashboard', isAuthenticated, isAdmin, async (req, res) => {
 
     // Fetch recent payments
     const recentPaymentsResult = await pool.request().query(`
-      SELECT TOP 3 p_id AS payment_id, bill_id, p_method AS method, created_at 
+      SELECT TOP 3 pid AS payment_id, bill_id, p_method AS method, created_at 
       FROM dbo.payment 
       ORDER BY created_at DESC
     `);
