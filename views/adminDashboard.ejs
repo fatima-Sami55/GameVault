@@ -4,22 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/global.css">
     <link rel="stylesheet" href="/css/admin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="/images/favi.png">
 </head>
 <body>
 
     <!-- Sidebar -->
     <div class="sidebar">
-          <img src="/images/favi.png" alt="" width="30px" height="30px">
         <a href="/" class="logo">
+            <img src="/images/favi.png" alt="GameVault">
             <div class="logo-content">
-                <div class="logo-text">GameVault  </div>
+                <span class="logo-text">GameVault</span>
+                <span class="logo-badge">Admin</span>
             </div>
-            <span>Admin</span>
-          
         </a>
         <ul class="nav-links">
             <li class="active"><a href="/admin-dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
@@ -29,9 +29,6 @@
             <li><a href="/admin-products/manage"><i class="fas fa-cogs"></i> Manage Products</a></li>
             <li class="logout"><a href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
         </ul>
-        <div class="sidebar-footer">
-            <p>&copy; 2025 Game Vault Admin</p>
-        </div>
     </div>
 
     <!-- Main Content -->
@@ -43,7 +40,7 @@
             </div>
             <div class="header-right">
                 <div class="user-welcome">
-                    <img src="/images/pfp.png" alt="Admin" class="avatar">
+                    <i class="fas fa-user-circle avatar-icon"></i>
                     <span>Welcome back, <%= user.name || 'Admin' %>!</span>
                 </div>
             </div>
@@ -86,35 +83,55 @@
         <div class="recent-activity">
             <h2>Recent Activity</h2>
             <div class="activity-list">
-               <% activities.forEach(activity => { %>
-    <div class="activity-item">
-        <div class="activity-icon">
-            <i class="fas fa-<%= activity.type %>"></i>
-        </div>
-        <div class="activity-details">
-            <h3><%= activity.description %></h3>
-            <p><%= activity.description %></p>
-            <span class="activity-time"><%= new Date(activity.timestamp).toLocaleString() %></span>
-        </div>
-    </div>
-<% }) %>
+               <% activities.forEach((activity, index) => { %>
+                    <div class="activity-item <%= index >= 7 ? 'hidden-activity' : '' %>" style="<%= index >= 7 ? 'display: none;' : '' %>">
+                        <div class="activity-icon">
+                            <i class="fas fa-<%= activity.type %>"></i>
+                        </div>
+                        <div class="activity-details">
+                            <h3><%= activity.description %></h3>
+                            <span class="activity-time"><%= new Date(activity.timestamp).toLocaleString() %></span>
+                        </div>
+                    </div>
+                <% }) %>
             </div>
+            <% if (activities.length > 7) { %>
+                <div style="text-align: center; margin-top: 1.5rem;">
+                    <button id="see-more-btn" class="btn btn-login" style="width: auto; padding: 0.6rem 2rem; border-radius: 50px; background: var(--accent); color: white; border: none; cursor: pointer; font-weight: 600;">See More</button>
+                </div>
+            <% } %>
         </div>
     </div>
 
     <!-- Hamburger Menu -->
-    <div class="hamburger" onclick="toggleSidebar()">
+    <div class="hamburger">
         <span></span>
         <span></span>
         <span></span>
     </div>
 
     <script>
-        function toggleSidebar() {
-            document.querySelector('.sidebar').classList.toggle('active');
-            document.querySelector('.main-content').classList.toggle('sidebar-active');
-            document.querySelector('.hamburger').classList.toggle('active');
-        }
+        document.addEventListener('DOMContentLoaded', () => {
+            const hamburger = document.querySelector('.hamburger');
+            if (hamburger) {
+                hamburger.addEventListener('click', () => {
+                    document.querySelector('.sidebar').classList.toggle('active');
+                    document.querySelector('.main-content').classList.toggle('sidebar-active');
+                    hamburger.classList.toggle('active');
+                });
+            }
+
+            const seeMoreBtn = document.getElementById('see-more-btn');
+            if (seeMoreBtn) {
+                seeMoreBtn.addEventListener('click', function() {
+                    document.querySelectorAll('.hidden-activity').forEach(item => {
+                        item.style.display = 'flex';
+                    });
+                    seeMoreBtn.parentElement.style.display = 'none';
+                });
+            }
+        });
     </script>
+    <script src="/js/nav.js"></script>
 </body>
 </html>

@@ -3,123 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Products - GameVault</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link href="/css/products.css" rel="stylesheet">
+    <title>Edit Product - GameVault</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/admin.css">
+    <link rel="stylesheet" href="/css/products.css">
     <link rel="icon" type="image/png" href="/images/favi.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- Hexagon Background -->
-    <div class="hexagon-bg"></div>
-
-    <!-- Navbar -->
-    <nav class="navbar">
+    <!-- Sidebar -->
+    <div class="sidebar">
         <a href="/" class="logo">
-        <img src="/images/favi.png" alt="" width="30px" height="30px"></span>
-            Game<span>Vault</span>
+            <img src="/images/favi.png" alt="GameVault">
+            <div class="logo-content">
+                <span class="logo-text">GameVault</span>
+                <span class="logo-badge">Admin</span>
+            </div>
         </a>
-        
         <ul class="nav-links">
-            <li><a href="/">Home</a></li>
-            <li><a href="/games">Games</a></li>
-            <li><a href="/admin-dashboard">Dashboard</a></li> 
+            <li><a href="/admin-dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li><a href="/home"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="/admin-user"><i class="fas fa-users"></i> Users</a></li>
+            <li><a href="/admin-products"><i class="fas fa-box"></i> Add Products</a></li>
+            <li class="active"><a href="/admin-products/manage"><i class="fas fa-cogs"></i> Manage Products</a></li>
+            <li class="logout"><a href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
         </ul>
-        
-        <div class="nav-actions">
-            <!-- Added nav-actions to group hamburger and potential future buttons -->
-            <div class="hamburger" role="button" aria-label="Toggle navigation" aria-expanded="false">
-                <div class="line1"></div>
-                <div class="line2"></div>
-                <div class="line3"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="admin-header">
+            <div class="header-left">
+                <h1>Edit Product</h1>
+                <p>Modify game product details.</p>
+            </div>
+            <div class="header-right">
+                <div class="user-welcome">
+                    <i class="fas fa-user-circle avatar-icon"></i>
+                    <span>Welcome back, <%= user.name %>!</span>
+                </div>
             </div>
         </div>
-    </nav>
-    
-    <!-- Product Form -->
-  <form action="/products/edit/<%= product.pid %>" method="POST" enctype="multipart/form-data">
-    <h2>Edit Product</h2>
 
-    <!-- Product Name -->
-    <div>
-        <label for="name">Product Name:</label>
-        <input type="text" id="name" name="name" value="<%= product.name %>" required>
+        <section class="product-form-card">
+            <form action="/products/edit/<%= product.pid %>" method="POST" enctype="multipart/form-data" id="editProductForm" class="product-form">
+                <div class="form-group">
+                    <label for="name">Product Name</label>
+                    <input type="text" id="name" name="name" value="<%= product.name %>" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" rows="4" required><%= product.description %></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="price">Price (USD)</label>
+                        <input type="number" id="price" name="price" step="0.01" min="0" value="<%= product.price %>" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="genre">Genre</label>
+                        <input type="text" id="genre" name="genre" value="<%= product.genre %>" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select id="status" name="status" required>
+                            <option value="available" <%= product.status === 'available' ? 'selected' : '' %>>Available</option>
+                            <option value="unavailable" <%= product.status === 'unavailable' ? 'selected' : '' %>>Unavailable</option>
+                            <option value="coming-soon" <%= product.status === 'coming-soon' ? 'selected' : '' %>>Coming Soon</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="img">Product Image</label>
+                    <input type="file" id="img" name="img" accept="image/*" class="file-input">
+                    <input type="hidden" name="img" value="<%= product.img %>">
+                    <% if (product.img) { %>
+                        <div class="current-image">
+                            <img src="<%= product.img.startsWith('http') ? product.img : '/uploads/' + product.img %>" alt="<%= product.name %>">
+                            <span>Current image — upload a new file to replace it.</span>
+                        </div>
+                    <% } %>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-save"><i class="fas fa-save"></i> Save Changes</button>
+                    <a href="/admin-products/manage" class="btn btn-cancel"><i class="fas fa-arrow-left"></i> Back to Manage</a>
+                </div>
+            </form>
+        </section>
     </div>
 
-    <!-- Description -->
-    <div>
-        <label for="description">Description:</label>
-        <textarea id="description" name="description" rows="4" required><%= product.description %></textarea>
+    <!-- Hamburger Menu -->
+    <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
     </div>
 
-    <!-- Price -->
-    <div>
-        <label for="price">Price (USD):</label>
-        <input type="number" id="price" name="price" step="0.01" min="0" value="<%= product.price %>" required>
-    </div>
-
-    <!-- Genre -->
-    <div>
-        <label for="genre">Genre:</label>
-        <input type="text" id="genre" name="genre" value="<%= product.genre %>" required>
-    </div>
-
-    <!-- Status -->
-    <div>
-        <label for="status">Status:</label>
-        <select id="status" name="status" required>
-            <option style="color: black;" value="available" <%= product.status === 'available' ? 'selected' : '' %>>Available</option>
-            <option  style="color: black;" value="unavailable" <%= product.status === 'unavailable' ? 'selected' : '' %>>Unavailable</option>
-            <option  style="color: black;" value="coming-soon" <%= product.status === 'coming-soon' ? 'selected' : '' %>>Coming Soon</option>
-        </select>
-    </div>
-
-    <!-- Image Upload -->
-     <div>
-        <label for="img">Product Image:</label>
-        <input type="file" id="img" name="img" accept="image/*">
-        <!-- Hidden field to send the current image filename -->
-        <input type="hidden" name="img" value="<%= product.img %>">
-        <% if (product.img) { %>
-            <p>Current Image: <img src="/uploads/<%= product.img %>" alt="" width="80px" height="80px"></p>
-        <% } %>
-    </div>
-
-    <!-- Submit Button -->
-    <button type="submit">Edit Product</button>
-</form>
-
-    
+    <script src="/js/nav.js"></script>
     <script>
-        // Navbar scroll effect
-        window.addEventListener('scroll', function() {
-            const navbar = document.querySelector('.navbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
+        document.getElementById('editProductForm').addEventListener('submit', function (e) {
+            const name = document.getElementById('name').value.trim();
+            const description = document.getElementById('description').value.trim();
+            const price = parseFloat(document.getElementById('price').value);
+            const genre = document.getElementById('genre').value.trim();
+
+            if (name.length < 3) {
+                e.preventDefault();
+                showToast('Product name must be at least 3 characters.', 'error');
+            } else if (description.length < 10) {
+                e.preventDefault();
+                showToast('Description must be at least 10 characters.', 'error');
+            } else if (!price || price <= 0) {
+                e.preventDefault();
+                showToast('Price must be greater than 0.', 'error');
+            } else if (genre.length < 3) {
+                e.preventDefault();
+                showToast('Genre must be at least 3 characters.', 'error');
             }
         });
-        
-        // Mobile menu toggle
-        const hamburger = document.querySelector('.hamburger');
-        const navLinks = document.querySelector('.nav-links');
-        const body = document.querySelector('body');
-        
-        hamburger.addEventListener('click', function() {
-            navLinks.classList.toggle('nav-active');
-            const isExpanded = navLinks.classList.contains('nav-active');
-            hamburger.setAttribute('aria-expanded', isExpanded);
-            body.style.overflow = isExpanded ? 'hidden' : 'auto';
-        });
-        
-        // Close menu when clicking a link
-        const navItems = document.querySelectorAll('.nav-links a');
-        navItems.forEach(item => {
-            item.addEventListener('click', () => {
-                navLinks.classList.remove('nav-active');
-                hamburger.setAttribute('aria-expanded', 'false');
-                body.style.overflow = 'auto';
-            });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const hamburger = document.querySelector('.hamburger');
+            if (hamburger) {
+                hamburger.addEventListener('click', function () {
+                    document.querySelector('.sidebar').classList.toggle('active');
+                    document.querySelector('.main-content').classList.toggle('sidebar-active');
+                    this.classList.toggle('active');
+                });
+            }
         });
     </script>
 </body>

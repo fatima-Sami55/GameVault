@@ -2,14 +2,17 @@ const express = require('express');
 const router = express.Router();
 const sql = require('mssql');
 const { pool } = require('../../database/db');
+const { redirectWithFlash } = require('../../utils/flash');
 
 // Middleware to check if user is authenticated
 const isAuthenticated = (req, res, next) => {
     if (req.session.user) {
-        next();
-    } else {
-        res.status(401).json({ error: 'Please login first' });
+        return next();
     }
+    if (req.accepts('html') && !req.xhr) {
+        return redirectWithFlash(res, '/login', 'Please login first.', 'error');
+    }
+    res.status(401).json({ error: 'Please login first' });
 };
 
 // Render cart page
@@ -53,7 +56,10 @@ router.get('/cart', isAuthenticated, async (req, res) => {
                 WHERE cp.cart_id = @cartId
             `);
 
-            const updatedCartItems = cartItems.recordset.map(item => ({...item, img: `/uploads/${item.img}`}));
+            const updatedCartItems = cartItems.recordset.map(item => ({
+                ...item,
+                img: item.img.startsWith('http') ? item.img : `/uploads/${item.img}`
+            }));
 
 
         res.json(updatedCartItems);

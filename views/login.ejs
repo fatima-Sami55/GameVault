@@ -1,26 +1,86 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/login.css">
-     <link rel="icon" type="image/png" href="/images/favi.png">
+
+    <title>Login — GameVault</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/css/global.css">
+
+    <link rel="stylesheet" href="/css/login.css">
+
+    <link rel="icon" type="image/png" href="/images/favi.png">
+
 </head>
+
 <body>
+
+    <a href="/" class="return-home">&larr; Return to Home</a>
+
     <h1>Login</h1>
-    <form action="/login" method="POST">
+
+    <form action="/login" method="POST" id="loginForm">
+
         <div>
+
             <label for="email">Email:</label>
+
             <input type="email" id="email" name="email" required>
+
         </div>
+
         <div>
+
             <label for="password">Password:</label>
+
             <input type="password" id="password" name="password" required>
+
         </div>
+
         <button type="submit">Login</button>
+
         <p>Don't have an account? <a href="/register">Register Here</a></p>
+
     </form>
+
+
+
+    <script src="/js/nav.js"></script>
+
+    <script>
+
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
+
+            const email = document.getElementById('email').value.trim();
+
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+
+                e.preventDefault();
+
+                showToast('Please enter a valid email address.', 'error');
+
+            }
+
+        });
+
+
+
+        <% if (typeof error !== 'undefined' && error) { %>
+
+        showToast(<%- JSON.stringify(error) %>, 'error');
+
+        <% } %>
+
+    </script>
+
 </body>
+
 </html>
+

@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Games - GameVault</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/global.css">
     <link rel="stylesheet" href="/css/home.css">
     <link rel="stylesheet" href="/css/games-styles.css">
     <link rel="icon" type="image/png" href="/images/favi.png">
@@ -113,14 +114,18 @@
                     <p id="modalGamePrice" class="modal-game-price"></p>
                 </div>
             </div>
-            <div class="modal-footer">
+            <div class="modal-quantity">
+                <label for="quantity">Quantity</label>
                 <input type="number" class="quantity-input" id="quantity" value="1" min="1">
+            </div>
+            <div class="modal-footer">
                 <button class="modal-btn cancel-btn" data-action="close">Cancel</button>
-                <button class="modal-btn confirm-btn" data-action="add">AddToCart</button>
+                <button class="modal-btn confirm-btn" data-action="add">Add to Cart</button>
             </div>
         </div>
     </div>
 
     <script src="/js/games.js"></script>
+    <script src="/js/nav.js"></script>
 </body>
 </html>

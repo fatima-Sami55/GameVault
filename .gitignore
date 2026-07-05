@@ -1,4 +1,41 @@
-.env
+# Dependencies
 node_modules/
+
+# Environment & secrets
+.env
+.env.local
+.env.*.local
+
+# Local Node.js bundle (never commit)
+nodejs/
+
+# Runtime user uploads (admin-added product images)
+public/uploads/*
+!public/uploads/.gitkeep
+!public/uploads/seed_*
+
+# Logs & debug
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE / editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Deployment artifacts
+.vercel/
+.azure/
+
+# Local scratch / notes
 schema.txt
-public/images/pfp.png

@@ -1,13 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-    --primary: #2b2d42;
+    --bg: #05050a;
+    --bg-card: #0e0e1a;
+    --primary: #0e0e1a;
     --secondary: #8d99ae;
     --accent: #ef233c;
     --accent-hover: #d90429;
     --light: #edf2f4;
-    --dark: #1a1a2e;
-    --box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
+    --dark: #05050a;
+    --border: rgba(255,255,255,0.07);
+    --border-accent: rgba(239,35,60,0.25);
+    --box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
 }
 
 * {
@@ -18,9 +22,13 @@
 
 body {
     font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, var(--dark) 0%, #2a2a5a 100%);
+    background-color: var(--dark);
+    background-image:
+        radial-gradient(circle at 50% 0%, rgba(239,35,60,0.07) 0%, transparent 55%),
+        radial-gradient(circle at 0% 100%, rgba(239,35,60,0.03) 0%, transparent 40%),
+        radial-gradient(circle at 100% 100%, rgba(239,35,60,0.03) 0%, transparent 40%);
     color: var(--light);
-    padding-top: 100px;
+    padding-top: var(--nav-h, 72px);
     min-height: 100vh;
     overflow-x: hidden;
 }
@@ -28,9 +36,10 @@ body {
 /* Container */
 .container {
     max-width: 900px;
-    margin: 0 auto;
-    padding: 2rem;
-    background: rgba(255, 255, 255, 0.05);
+    margin: 3rem auto;
+    padding: 2.5rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
     border-radius: 16px;
     box-shadow: var(--box-shadow);
     text-align: center;
@@ -76,12 +85,12 @@ tr:hover {
 }
 
 /* Button */
-.btn {
+.container .btn {
     display: inline-block;
     margin-top: 2rem;
     padding: 0.8rem 2rem;
     background-color: var(--accent);
-    color: white;
+    color: white !important;
     border: none;
     border-radius: 50px;
     font-weight: 600;
@@ -90,8 +99,9 @@ tr:hover {
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.btn:hover {
+.container .btn:hover {
     background-color: var(--accent-hover);
+    color: white !important;
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(217, 4, 41, 0.4);
 }
@@ -107,7 +117,7 @@ tr:hover {
         font-size: 0.95rem;
     }
 
-    .btn {
+    .container .btn {
         font-size: 0.95rem;
         padding: 0.7rem 1.6rem;
     }
@@ -127,7 +137,7 @@ tr:hover {
         font-size: 0.85rem;
     }
 
-    .btn {
+    .container .btn {
         width: 100%;
         font-size: 1rem;
         margin-top: 1.2rem;

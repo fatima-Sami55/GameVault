@@ -7,6 +7,8 @@
     --light: #edf2f4;
     --dark: #1a1a2e;
     --box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
+    --bg: #05050a;
+    --bg-card: #0e0e1a;
   }
   
   * {
@@ -17,7 +19,8 @@
   
   body {
     font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, var(--dark) 0%, #2a2a5a 100%);
+    background-color: #05050a;
+    background-image: radial-gradient(circle at 50% 0%, rgba(239,35,60,0.08) 0%, transparent 55%);
     color: var(--light);
     min-height: 100vh;
     display: flex;
@@ -26,7 +29,24 @@
     align-items: center;
     padding: 2rem;
     position: relative;
-    overflow: hidden;
+    overflow: visible;
+  }
+
+  .return-home {
+    position: fixed;
+    top: 1.25rem;
+    left: 1.5rem;
+    color: var(--text-muted, rgba(237,242,244,0.55));
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    z-index: 10;
+  }
+
+  .return-home:hover {
+    color: var(--accent);
+    text-decoration: none;
   }
   
   /* Animated background elements */
@@ -100,14 +120,14 @@
   }
   
   form {
-    background: rgba(43, 45, 66, 0.8);
+    background: rgba(14, 14, 26, 0.9);
     backdrop-filter: blur(10px);
     padding: 3rem;
     border-radius: 16px;
     width: 100%;
     max-width: 450px;
     box-shadow: var(--box-shadow);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255,255,255,0.07);
     animation: fadeIn 0.5s ease-out;
   }
   
@@ -231,28 +251,43 @@
   }
   
   /* Password strength indicator */
-  .password-strength {
-    height: 4px;
-    margin-top: 8px;
-    border-radius: 2px;
-    background: #444;
-    position: relative;
-    overflow: hidden;
+  .strength-meter-bar {
+      height: 6px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+      margin-top: 8px;
+      overflow: hidden;
   }
-  
-  .password-strength::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 100%;
-    width: 0%;
-    background: var(--accent);
-    transition: width 0.3s ease;
+
+  #strength-bar {
+      height: 100%;
+      width: 0%;
+      transition: width 0.3s ease-in-out, background-color 0.3s ease-in-out;
   }
-  
-  input[type="password"]:focus + .password-strength::before {
-    width: 70%;
+
+  .strength-weak {
+      background-color: #ef233c !important;
+  }
+
+  .strength-medium {
+      background-color: #ffb703 !important;
+  }
+
+  .strength-strong {
+      background-color: #2ec4b6 !important;
+  }
+
+  .req-item {
+      transition: color 0.3s ease;
+  }
+
+  .req-item.valid {
+      color: #2ec4b6 !important;
+  }
+
+  .req-item.invalid {
+      color: #ef233c !important;
   }
   
   /* Responsive adjustments */

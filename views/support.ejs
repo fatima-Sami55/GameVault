@@ -3,143 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Vault Support</title>
-    <!-- Adding Font Awesome for icons -->
+    <title>Contact Us — GameVault</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/global.css">
     <link rel="stylesheet" href="/css/support.css">
     <link rel="icon" type="image/png" href="/images/favi.png">
 </head>
-<body>
-    <!-- Header -->
-    <header class="header">
-          <nav class="navbar">
-        <a href="/" class="logo"><img src="/images/favi.png" alt="" width="30px" height="30px"></span>
+<body class="support-page">
+    <nav class="navbar">
+        <a href="/" class="logo">
+            <img src="/images/favi.png" alt="" width="30" height="30">
             Game<span>Vault</span>
         </a>
-        
+
         <ul class="nav-links">
             <li><a href="/">Home</a></li>
             <li><a href="/games">Games</a></li>
+            <li><a href="/support/support">Contact</a></li>
             <% if (user && user.role === 'admin') { %>
-                <li><a href="/admin-dashboard">Dashboard</a></li>
+            <li><a href="/admin-dashboard">Dashboard</a></li>
             <% } %>
-            
         </ul>
-        
+
         <div class="nav-actions">
-            
             <div class="auth-buttons">
                 <% if (locals.user) { %>
-                    <!-- User is logged in, show welcome message and logout button -->
-                    <span class="user-welcome">Welcome, <%= user.name %>  </span>
-                    <form action="/logout" method="get" class="logout-form">
-                        <button type="submit" class="btn btn-login">Logout</button>
-                    </form>
+                <span class="user-welcome">Welcome, <%= user.name %></span>
+                <form action="/logout" method="get" class="logout-form">
+                    <button type="submit" class="btn btn-login">Logout</button>
+                </form>
                 <% } else { %>
-                    <!-- User is not logged in, show login and register buttons -->
-                    <a href="/login" class="btn btn-login">Login</a>
-                    <a href="/register" class="btn btn-register">Register</a>
+                <a href="/login" class="btn btn-login">Login</a>
+                <a href="/register" class="btn btn-register">Register</a>
                 <% } %>
             </div>
         </div>
-        
+
         <div class="hamburger">
             <div class="line1"></div>
             <div class="line2"></div>
             <div class="line3"></div>
         </div>
     </nav>
-    </header>
 
-    <!-- Main Content -->
-    <div class="container">
-        <!-- Support Header -->
+    <main class="support-main">
         <div class="support-header">
-            <h1>Contact Us</h1>
-            <p>Reach out to our support team or connect with us on social media.</p>
+            <h1>Contact <span>Us</span></h1>
+            <p>Reach our support team — we're here to help with orders, accounts, and more.</p>
         </div>
 
-        <!-- Contact Information -->
-        <div class="contact-info">
-            <div class="contact-item">
-                <i class="fas fa-envelope"></i>
-                <div>
-                    <h3>Email Support</h3>
-                    <p>support@gamevault.com</p>
-                    <p class="contact-note">Response within 24 hours</p>
-                </div>
+        <div class="contact-cards">
+            <div class="contact-card gv-card">
+                <div class="contact-card-icon"><i class="fas fa-envelope"></i></div>
+                <h3>Email Support</h3>
+                <p class="contact-value">support@gamevault.com</p>
+                <p class="contact-note">Response within 24 hours</p>
             </div>
-            <div class="contact-item">
-                <i class="fas fa-phone"></i>
-                <div>
-                    <h3>Phone Support</h3>
-                    <p>+1 (555) 123-4567</p>
-                    <p class="contact-note">Mon-Fri, 9AM-5PM EST</p>
-                </div>
+            <div class="contact-card gv-card">
+                <div class="contact-card-icon"><i class="fas fa-phone"></i></div>
+                <h3>Phone Support</h3>
+                <p class="contact-value">+1 (555) 123-4567</p>
+                <p class="contact-note">Mon–Fri, 9 AM – 5 PM EST</p>
             </div>
-            <div class="contact-item">
-                <i class="fas fa-comments"></i>
-                <div>
-                    <h3>Live Chat</h3>
-                    <p>Available on our website</p>
-                    <p class="contact-note">24/7 for Premium users</p>
-                </div>
+            <div class="contact-card gv-card">
+                <div class="contact-card-icon"><i class="fas fa-comments"></i></div>
+                <h3>Live Chat</h3>
+                <p class="contact-value">Available on our website</p>
+                <p class="contact-note">24/7 for Premium members</p>
             </div>
         </div>
 
-        <!-- Social Media -->
-        <div class="social-media">
-            <h2>Connect With Us</h2>
-            <ul class="social-links">
-                <li><a href="#"><i class="fab fa-twitter"></i></a></li>
-                <li><a href="#"><i class="fab fa-facebook"></i></a></li>
-                <li><a href="#"><i class="fab fa-instagram"></i></a></li>
-                <li><a href="#"><i class="fab fa-discord"></i></a></li>
-            </ul>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-column">
-                <h3>Game Vault</h3>
-                <ul class="footer-links">
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Careers</a></li>
-                    <li><a href="#">Press</a></li>
-                    <li><a href="#">Blog</a></li>
-                </#
-            <div class="footer-column">
-                <h3>Connect</h3>
-                <ul class="footer-links">
-                    <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
-                    <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
-                    <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
-                    <li><a href="#"><i class="fab fa-discord"></i> Discord</a></li>
-                </ul>
+        <section class="faq-section">
+            <h2>Frequently Asked <span>Questions</span></h2>
+            <div class="faq-list">
+                <details class="faq-item">
+                    <summary>How do I get a refund for a game?</summary>
+                    <p>Digital purchases are eligible for a refund within 14 days if the game has been played for less than 2 hours. Submit a request via email with your order number and we'll process it within 3–5 business days.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>How quickly will I receive my game key?</summary>
+                    <p>Most keys are delivered instantly to your account dashboard and email after payment is confirmed. Pre-orders are delivered on release day.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>I forgot my password — what should I do?</summary>
+                    <p>Use the "Forgot Password" link on the login page, or contact support with your registered email and we'll help you regain access within 24 hours.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Which payment methods do you accept?</summary>
+                    <p>We accept major credit and debit cards (Visa, Mastercard, Amex) as well as PayPal. All transactions are encrypted and secure.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Can I gift a game to someone else?</summary>
+                    <p>Yes! During checkout, select "Send as Gift" and enter the recipient's email. They'll receive the key directly with an optional personal message.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>My game key isn't working — help!</summary>
+                    <p>Double-check you're redeeming on the correct platform (Steam, Epic, etc.). If the issue persists, contact support with your order ID and a screenshot of the error.</p>
+                </details>
             </div>
-        </div>
-        <div class="footer-bottom">
-            <p>© 2025 Game Vault. All rights reserved.</p>
-        </div>
-    </footer>
+        </section>
+    </main>
 
+    <script src="/js/nav.js"></script>
     <script>
-        // Mobile Menu Toggle
-        document.getElementById('mobile-menu-toggle').addEventListener('click', function() {
-            document.getElementById('nav-links').classList.toggle('active');
-            
-            // Toggle icon
-            const icon = this.querySelector('i');
-            if (icon.classList.contains('fa-bars')) {
-                icon.classList.remove('fa-bars');
-                icon.classList.add('fa-times');
-            } else {
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars');
-            }
+        window.addEventListener('scroll', function () {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) navbar.classList.add('scrolled');
+            else navbar.classList.remove('scrolled');
         });
     </script>
 </body>

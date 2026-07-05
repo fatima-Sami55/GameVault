@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { pool, sql, poolConnect } = require('../../database/db');
+const { redirectWithFlash } = require('../../utils/flash');
 function generateTrackingNumber() {
     const randomString = Math.random().toString(36).substring(2, 10).toUpperCase();
     return 'TRK' + randomString;
@@ -60,26 +61,32 @@ router.post('/place', async (req, res) => {
         });
 
         // Step 4: Insert into order
+        // o_id is a non-IDENTITY primary key, so generate the next id (same
+        // approach the product table uses via its INSTEAD OF INSERT trigger).
         const orderResult = await pool.request()
             .input('userId', sql.UniqueIdentifier, userId)
             .input('status', sql.VarChar(50), 'Pending')
             .query(`
-                INSERT INTO [orders] (user_id, o_status)
-                OUTPUT INSERTED.o_id
-                VALUES (@userId, @status)
+                DECLARE @newOrderId INT;
+                SELECT @newOrderId = ISNULL(MAX(o_id), 0) + 1 FROM [orders];
+                INSERT INTO [orders] (o_id, user_id, o_status)
+                VALUES (@newOrderId, @userId, @status);
+                SELECT @newOrderId AS o_id;
             `);
 
         const orderId = orderResult.recordset[0].o_id;
 
-        // Step 5: Create billing
+        // Step 5: Create billing (bill_id is also a non-IDENTITY primary key)
          const billingResult = await pool.request()
     .input('userId', sql.UniqueIdentifier, userId)
     .input('amount', sql.Decimal(10, 2), totalAmount)
     .input('date', sql.DateTime, new Date())
     .query(`
-        INSERT INTO billing (user_id, amount, date)
-        OUTPUT INSERTED.bill_id
-        VALUES (@userId, @amount, @date)
+        DECLARE @newBillId INT;
+        SELECT @newBillId = ISNULL(MAX(bill_id), 0) + 1 FROM billing;
+        INSERT INTO billing (bill_id, user_id, amount, date)
+        VALUES (@newBillId, @userId, @amount, @date);
+        SELECT @newBillId AS bill_id;
     `);
 
      const billId = billingResult.recordset[0].bill_id; // use this generated ID for next steps
@@ -93,7 +100,7 @@ router.post('/place', async (req, res) => {
 
     } catch (err) {
         console.error('❌ Order placement error:', err);
-        res.status(500).send("Internal Server Error");
+        redirectWithFlash(res, '/cart', 'Could not place your order. Please try again.', 'error');
     }
 });
 
@@ -141,7 +148,7 @@ router.get('/', async (req, res) => {
 
   } catch (err) {
     console.error('❌ Error rendering order page:', err);
-    res.status(500).send("Error loading order page.");
+    redirectWithFlash(res, '/cart', 'Could not load your order. Please try again.', 'error');
   }
 });
 
@@ -187,7 +194,7 @@ router.get('/confirmation/:billId', async (req, res) => {
             `);
 
         if (billingResult.recordset.length === 0) {
-            return res.status(404).send("Billing record not found.");
+            return redirectWithFlash(res, '/', 'Billing record not found.', 'error');
         }
 
         const billingInfo = billingResult.recordset[0];
@@ -264,7 +271,7 @@ router.get('/confirmation/:billId', async (req, res) => {
 
     } catch (err) {
         console.error("❌ Error loading confirmation page:", err);
-        res.status(500).send("Internal Server Error");
+        redirectWithFlash(res, '/', 'Could not load your order confirmation. Please try again.', 'error');
     }
 });
 

@@ -1,88 +1,95 @@
-# 🎮 Game Store - Database Systems Project    ![MIT License](https://img.shields.io/badge/license-MIT-green.svg)
+# GameVault
 
-A database-driven e-commerce web application for buying and selling games online. Built as part of the Database Systems course at FAST NUCES.
+A database-driven e-commerce web application for video games. Users can browse titles, manage a shopping cart, and complete checkout with simulated payment processing. Administrators get a unified console for inventory and user management.
 
-## 👥 Team Members
+## Features
 
-- **Wajahat Ali**
-- **Zaid Haris**
-- **Fatima**
+- **Authentication & roles** — Signup, login, bcrypt hashing, session-based auth, customer vs admin roles
+- **Game catalog** — Browse, filter, sort, and coming-soon highlights on the home page
+- **Cart & orders** — Real-time cart totals, checkout, order history, simulated card validation
+- **Admin console** — Dashboard stats, add/edit/delete products, user role management
+- **Security** — Helmet CSP headers, password validation, input checks, secure session cookies in production
 
-## 📌 Project Objective
+## Tech Stack
 
-The goal is to develop a Game Store platform with features like:
+- **Frontend:** EJS, Vanilla CSS, JavaScript
+- **Backend:** Node.js, Express 5
+- **Database:** Microsoft SQL Server (Azure SQL compatible)
 
-- User Authentication & Authorization
-- Game Browsing and Filtering
-- Shopping Cart & Order Placement
-- Admin Dashboard for Inventory Management
-- Secure Payment Processing
-- Responsive UI with front-end and back-end integration
+## Prerequisites
 
----
+- Node.js 18+
+- SQL Server or Azure SQL Database
 
-## 📦 Project Details
+## Local Setup
 
-### ✅ Database Design & Setup
+1. **Clone and install**
+   ```bash
+   git clone <repository-url>
+   cd GamerZone
+   npm install
+   ```
 
-- Schema Design (Users, Games, Orders, Payments, Cart)
-- Relationships and normalization up to 3NF
-- SQL Queries for Table Creation
-- Views, Indexes, Joins, and Triggers
+2. **Environment**
+   ```bash
+   cp .env.example .env
+   ```
+   Fill in your database credentials and a `SESSION_SECRET`.
 
-### ✅ Basic UI Design
+3. **Database**
+   - Fresh install: run `database/schema.sql` in SQL Server Management Studio or Azure Data Studio
+   - Existing Azure deployment: use `database/azure_deploy.sql` for table-only setup
+   - Seed demo data (optional):
+     ```bash
+     npm run seed
+     ```
 
-- Home, Product, Cart, and Checkout Pages
-- Login/Register Forms with Input Validation
-- Fully Responsive Layout
+4. **Run**
+   ```bash
+   npm run dev    # development with nodemon
+   npm start      # production-style start
+   ```
+   Open [http://localhost:3000](http://localhost:3000)
 
-### ✅ User Authentication & Role-Based Access
+## Production Checklist
 
-- Signup & Login Functionality
-- Role-based access (Customer vs Admin)
-- Password Hashing & Security
-- Backend Integration with Stored Procedures
+| Variable | Required | Notes |
+|---|---|---|
+| `NODE_ENV` | Yes | Set to `production` |
+| `SESSION_SECRET` | Yes | Long random string |
+| `DB_SERVER`, `DB_NAME`, `DB_USER`, `DB_PASSWORD` | Yes | Azure SQL credentials |
+| `DB_TRUST_SERVER_CERT` | No | Leave unset/`false` on Azure SQL |
+| `PORT` | No | Defaults to `3000`; Azure sets this automatically |
 
-### ✅ Core E-commerce Functionalities
+Uploaded product images are stored in `public/uploads/` at runtime and are **not** committed to git. Ensure that folder is writable on your host.
 
-- Dynamic Shopping Cart
-- Order Placement and Inventory Update
-- Simulated Payment System
+## Deployment
 
-### ✅ Final Application Integration & Testing
+### Azure App Service
 
-- Refined UI/UX
-- Admin Inventory Management Panel
-- Customer Order Tracking
-- Testing and Debugging for Performance and Load
+The repo includes `web.config` for IIS/iisnode and a GitHub Actions workflow (`.github/workflows/main_gamevault.yml`).
 
----
+1. Connect the repository to Azure Deployment Center
+2. Add environment variables under **Configuration → Application settings**
+3. Allow Azure App Service outbound IPs in your SQL firewall rules
 
-## 🛠️ Tech Stack
+### Vercel
 
-- **Front-end:** HTML, CSS, Bootstrap, JavaScript, EJS
-- **Back-end:** Node.js, Express.js
-- **Database:** SQL Server
-- **Version Control:** Git & GitHub
+A `vercel.json` is included for serverless deployment. Set the same environment variables in the Vercel dashboard. Note: file uploads to `public/uploads/` are ephemeral on serverless hosts — use blob storage for production file uploads on Vercel.
 
----
+## Project Structure
 
-## 🚀 Deployment
+```
+├── database/          # DB connection, schema SQL, seed script
+├── middleware/        # Auth guards
+├── public/            # Static assets (css, js, images, uploads)
+├── routes/            # Express route modules
+├── utils/             # Shared helpers
+├── views/             # EJS templates
+├── main.js            # App entry point
+└── web.config         # Azure IIS config
+```
 
-The application was successfully deployed on **Azure App Service** with a cloud-hosted **Azure SQL Database**.
+## License
 
-### 🧩 Key Deployment Configurations:
-
-- **Hosting Platform:** Microsoft Azure (App Service)
-- **Database:** Azure SQL with firewall rules configured for remote access
-- **Environment Variables:** Stored securely in Azure App Settings
-- **Logging:** Enabled via Azure Log Stream for real-time debugging
-- **Media Uploads:** Handled via `multer` for local image uploads; can be extended to Azure Blob Storage
-
-> ⚠️ Note: Azure App Service does not support the `USE` SQL command for switching databases. A fresh DB connection must be made if accessing another DB.
-
----
-
-## 🧾 License
-
-This project is licensed under the [MIT License](./LICENSE) — feel free to use, modify, and distribute it.
+See [LICENSE](LICENSE).

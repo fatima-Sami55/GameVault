@@ -31,24 +31,36 @@ function displayGames(games) {
         return;
     }
 
-    const gamesHTML = games.map(game => `
-        <div class="game-card">
+    const gamesHTML = games.map(game => {
+        const outOfStock = game.status === 'unavailable';
+        // Split the genre string on commas and render each value as its own tag.
+        const genreTags = (game.genre || '')
+            .split(',')
+            .map(g => g.trim())
+            .filter(Boolean)
+            .map(g => `<span class="genre-badge">${g}</span>`)
+            .join('');
+        return `
+        <div class="game-card${outOfStock ? ' is-out-of-stock' : ''}">
             <div class="game-image-container">
                 <img src="${game.img}" class="game-image" alt="${game.name}">
-                <span class="genre-badge">${game.genre}</span>
             </div>
             <div class="game-content">
+                ${genreTags ? `<div class="genre-tags">${genreTags}</div>` : ''}
                 <h3 class="game-title">${game.name}</h3>
                 <p class="game-description">${game.description.substring(0, 100)}...</p>
                 <div class="game-footer">
                     <span class="game-price">$${game.price.toFixed(2)}</span>
-                    <button class="add-to-cart-btn" data-game='${JSON.stringify(game)}'>
+                    ${outOfStock
+                        ? `<span class="out-of-stock-text">Out of Stock</span>`
+                        : `<button class="add-to-cart-btn" data-game='${JSON.stringify(game)}'>
                         Add To Cart
-                    </button>
+                    </button>`}
                 </div>
             </div>
         </div>
-    `).join('');
+    `;
+    }).join('');
 
     container.innerHTML = gamesHTML;
 
@@ -98,7 +110,7 @@ async function addToCart() {
         if (response.ok) {
             closeModal();
             showSuccess('Game added to cart successfully');
-            updateCartCount();
+            if (typeof updateCartCount === 'function') updateCartCount();
         } else {
             const errorData = await response.json();
             showError(errorData.error || 'Failed to add game to cart');
@@ -106,18 +118,6 @@ async function addToCart() {
     } catch (error) {
         console.error('Error adding to cart:', error);
         showError('Failed to add game to cart');
-    }
-}
-
-// Update cart count
-async function updateCartCount() {
-    try {
-        const response = await fetch('/cart/cart');
-        const items = await response.json();
-        const count = items.reduce((total, item) => total + item.quantity, 0);
-        document.getElementById('cart-count').textContent = count;
-    } catch (error) {
-        console.error('Error updating cart count:', error);
     }
 }
 
@@ -140,6 +140,10 @@ function filterGames() {
 
 // Show success message
 function showSuccess(message) {
+    if (typeof showToast === 'function') {
+        showToast(message, 'success');
+        return;
+    }
     const alert = document.createElement('div');
     alert.className = 'success-message';
     alert.textContent = message;
@@ -149,6 +153,10 @@ function showSuccess(message) {
 
 // Show error message
 function showError(message) {
+    if (typeof showToast === 'function') {
+        showToast(message, 'error');
+        return;
+    }
     const alert = document.createElement('div');
     alert.className = 'error-message';
     alert.textContent = message;
@@ -159,7 +167,7 @@ function showError(message) {
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
     fetchGames();
-    updateCartCount();
+    if (typeof updateCartCount === 'function') updateCartCount();
 
     // Add event listeners for filters
     document.getElementById('genreFilter').addEventListener('change', filterGames);

@@ -5,52 +5,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Game Vault Admin - Manage Users</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/admin.css">
     <link rel="stylesheet" href="/css/users.css">
     <link rel="icon" type="image/png" href="/images/favi.png">
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <nav class="navbar">
-            <a href="/" class="logo">
-                <span class="logo-icon"><img src="/images/favi.png" alt="" width="30px" height="30px"></span>
-                Game<span>Vault</span>
-            </a>
-            <ul class="nav-links">
-                <li><a href="/">Home</a></li>
-                <li><a href="/games">Games</a></li>
-                <% if (user && user.role === 'admin') { %>
-                    <li><a href="/admin-dashboard">Dashboard</a></li>
-                <% } %>
-            </ul>
-            <div class="nav-actions">
-                <div class="auth-buttons">
-                    <% if (locals.user) { %>
-                        <span class="user-welcome">Welcome, <%= user.name %></span>
-                        <form action="/logout" method="get" class="logout-form">
-                            <button type="submit" class="btn btn-login">Logout</button>
-                        </form>
-                    <% } else { %>
-                        <a href="/login" class="btn btn-login">Login</a>
-                        <a href="/register" class="btn btn-register">Register</a>
-                    <% } %>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <a href="/" class="logo">
+            <img src="/images/favi.png" alt="GameVault">
+            <div class="logo-content">
+                <span class="logo-text">GameVault</span>
+                <span class="logo-badge">Admin</span>
+            </div>
+        </a>
+        <ul class="nav-links">
+            <li><a href="/admin-dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li><a href="/home"><i class="fas fa-home"></i> Home</a></li>
+            <li class="active"><a href="/admin-user"><i class="fas fa-users"></i> Users</a></li>
+            <li><a href="/admin-products"><i class="fas fa-box"></i> Add Products</a></li>
+            <li><a href="/admin-products/manage"><i class="fas fa-cogs"></i> Manage Products</a></li>
+            <li class="logout"><a href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="admin-header">
+            <div class="header-left">
+                <h1>Manage Users</h1>
+                <p>Edit users role or delete users accounts.</p>
+            </div>
+            <div class="header-right">
+                <div class="user-welcome">
+                    <i class="fas fa-user-circle avatar-icon"></i>
+                    <span>Welcome back, <%= user.name %>!</span>
                 </div>
             </div>
-            <div class="hamburger">
-                <div class="line1"></div>
-                <div class="line2"></div>
-                <div class="line3"></div>
-            </div>
-        </nav>
-    </header>
-
-   <!-- Main Content -->
-<div class="container">
-    <div class="admin-header">
-        <h1>Manage Users</h1>
-        <p>Edit users role or delete users accounts.</p>
-    </div>
+        </div>
 
     <!-- Users Table -->
     <% const regularUsers = users.filter(u => u.role === 'user'); %>
@@ -95,64 +89,48 @@
     <% } else { %>
         <p style="text-align: center;">No users exsist.</p>
     <% } %>
-</div>
+    <!-- Main Content Close -->
+    </div>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-column">
-                <h3>Game Vault</h3>
-                <ul class="footer-links">
-                    <li><a href="/about">About Us</a></li>
-                    <li><a href="/careers">Careers</a></li>
-                    <li><a href="/press">Press</a></li>
-                    <li><a href="/blog">Blog</a></li>
-                </ul>
-            </div>
-            <div class="footer-column">
-                <h3>Connect</h3>
-                <ul class="footer-links">
-                    <li><a href="https://twitter.com/gamevault"><i class="fab fa-twitter"></i> Twitter</a></li>
-                    <li><a href="https://facebook.com/gamevault"><i class="fab fa-facebook"></i> Facebook</a></li>
-                    <li><a href="https://instagram.com/gamevault"><i class="fab fa-instagram"></i> Instagram</a></li>
-                    <li><a href="https://discord.gg/gamevault"><i class="fab fa-discord"></i> Discord</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>© 2025 Game Vault. All rights reserved.</p>
-        </div>
-    </footer>
+    <!-- Hamburger Menu -->
+    <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
 
-   <script>
+    <!-- Footer removed for admin layout -->
 
- document.querySelectorAll('.make-admin-form').forEach(form => {
-    form.addEventListener('submit', function (event) {
-        event.preventDefault();
-        if (confirm("Are you sure you want to make this user an admin?")) {
-            form.submit();
-        }
-    });
-});
-
-document.querySelectorAll('.delete-user-form').forEach(form => {
-    form.addEventListener('submit', function (event) {
-        event.preventDefault();
-        if (confirm("Are you sure you want to delete this user?")) {
-            form.submit();
-        }
-    });
-});
-
-
-    const hamburger = document.querySelector('.hamburger');
-    if (hamburger) {
-        hamburger.addEventListener('click', function () {
-            document.querySelector('.nav-links').classList.toggle('nav-active');
-            this.classList.toggle('toggle');
+    <script src="/js/nav.js"></script>
+    <script>
+        document.querySelectorAll('.make-admin-form').forEach(form => {
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                if (confirm("Are you sure you want to make this user an admin?")) {
+                    form.submit();
+                }
+            });
         });
-    }
-</script>
 
+        document.querySelectorAll('.delete-user-form').forEach(form => {
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                if (confirm("Are you sure you want to delete this user?")) {
+                    form.submit();
+                }
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const hamburger = document.querySelector('.hamburger');
+            if (hamburger) {
+                hamburger.addEventListener('click', function () {
+                    document.querySelector('.sidebar').classList.toggle('active');
+                    document.querySelector('.main-content').classList.toggle('sidebar-active');
+                    this.classList.toggle('active');
+                });
+            }
+        });
+    </script>
 </body>
 </html>

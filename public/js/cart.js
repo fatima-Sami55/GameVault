@@ -114,7 +114,7 @@ async function updateQuantity(pid, quantity) {
 
         if (response.ok) {
             fetchCart();
-            updateCartCount();
+            if (typeof updateCartCount === 'function') updateCartCount();
         } else {
             showError('Failed to update quantity');
         }
@@ -133,7 +133,7 @@ async function removeItem(pid) {
 
         if (response.ok) {
             fetchCart();
-            updateCartCount();
+            if (typeof updateCartCount === 'function') updateCartCount();
             showSuccess('Item removed from cart');
         } else {
             showError('Failed to remove item');
@@ -152,7 +152,7 @@ async function clearCart() {
 
             if (response.ok) {
                 fetchCart();
-                updateCartCount();
+                if (typeof updateCartCount === 'function') updateCartCount();
                 showSuccess('Cart cleared successfully!');
             } else {
                 showError('Failed to clear cart');
@@ -169,20 +169,12 @@ function checkout() {
 }
 
 
-// Update cart count in navbar
-async function updateCartCount() {
-    try {
-        const response = await fetch('/cart/cart');
-        const items = await response.json();
-        const count = items.reduce((total, item) => total + item.quantity, 0);
-        document.getElementById('cart-count').textContent = count;
-    } catch (error) {
-        console.error('Error updating cart count:', error);
-    }
-}
-
 // Show success message
 function showSuccess(message) {
+    if (typeof showToast === 'function') {
+        showToast(message, 'success');
+        return;
+    }
     const alert = document.createElement('div');
     alert.className = 'success-message';
     alert.textContent = message;
@@ -192,6 +184,10 @@ function showSuccess(message) {
 
 // Show error message
 function showError(message) {
+    if (typeof showToast === 'function') {
+        showToast(message, 'error');
+        return;
+    }
     const alert = document.createElement('div');
     alert.className = 'error-message';
     alert.textContent = message;
@@ -202,7 +198,7 @@ function showError(message) {
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
     fetchCart();
-    updateCartCount();
+    if (typeof updateCartCount === 'function') updateCartCount();
 
     // Add event listener for checkout button
     const checkoutBtn = document.querySelector('.checkout-btn');

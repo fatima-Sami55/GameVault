@@ -1,9 +1,11 @@
+const { redirectWithFlash } = require('../utils/flash');
+
 // middleware to check if user is logged in
 function isAuthenticated(req, res, next) {
     if (req.session.user) {
       return next();
     }
-    return res.status(401).send('⛔ Access denied. Please login first.');
+    return redirectWithFlash(res, '/login', 'Please log in to continue.', 'error');
   }
   
   // middleware to check if user is admin
@@ -11,13 +13,13 @@ function isAuthenticated(req, res, next) {
     if (req.session.user && req.session.user.role === 'admin') {
       return next();
     }
-    return res.status(403).send('⛔ Access denied. Admins only.');
+    return redirectWithFlash(res, '/', 'Access denied — admins only.', 'error');
   }
   
   // middleware to prevent login/register if already logged in
   function redirectIfAuthenticated(req, res, next) {
     if (req.session.user) {
-      return res.status(403).send('⚠️ Already logged in. Logout to continue.');
+      return redirectWithFlash(res, '/', 'You are already logged in.', 'info');
     }
     return next();
   }

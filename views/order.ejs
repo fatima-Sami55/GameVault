@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GameVault - My Orders</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/global.css">
     <link rel="stylesheet" href="/css/order.css">
     <link rel="icon" type="image/png" href="/images/favi.png">
 </head>
@@ -32,7 +33,9 @@
             <div class="auth-buttons">
                 <% if (locals.user) { %>
                     <span class="user-welcome">Welcome, <%= user.name %></span>
-                    <a href="/logout" class="btn btn-login">Logout</a>
+                    <form action="/logout" method="get" class="logout-form">
+                        <button type="submit" class="btn btn-login">Logout</button>
+                    </form>
 
 
                 <% } else { %>
@@ -88,20 +91,6 @@
         </div>
     </section>
 
-    <script>
-        // Update cart count
-        async function updateCartCount() {
-            try {
-                const response = await fetch('/cart/cart');
-                const items = await response.json();
-                const count = items.reduce((total, item) => total + item.quantity, 0);
-                document.getElementById('cart-count').textContent = count;
-            } catch (error) {
-                console.error('Error updating cart count:', error);
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', updateCartCount);
-    </script>
+    <script src="/js/nav.js"></script>
 </body>
 </html>

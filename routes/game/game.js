@@ -15,7 +15,7 @@ router.get('/games', async (req, res) => {
         let query = `
             SELECT pid, name, description, price, genre, status, img
             FROM product
-            WHERE status = 'available'
+            WHERE status IN ('available', 'unavailable')
         `;
         
         const params = [];
@@ -66,7 +66,7 @@ router.get('/games', async (req, res) => {
         // Adjust image path for each game
         const gamesWithAdjustedImagePaths = result.recordset.map(game => ({
             ...game,
-            img: `/uploads/${game.img}` 
+            img: game.img.startsWith('http') ? game.img : `/uploads/${game.img}` 
         }));
         
         res.json(gamesWithAdjustedImagePaths);
