@@ -9,8 +9,11 @@ A database-driven e-commerce web application for video games. This platform enab
   - Length must be between 8 and 25 characters.
   - Must contain at least one uppercase letter, one lowercase letter, one number, and one special symbol.
   - Real-time password strength meter (Weak/Medium/Strong visual tracker) and confirm password matching validation on signup.
+    
 - **Game Catalog**: Browsing, filtering, and responsive coming-soon catalogs.
+  
 - **Cart & Order Lifecycle**: Real-time cart calculations, checkout processing, order logs, and simulated credit card validation.
+  
 - **Admin Console**: Unified dashboard displaying key registration stats, product inventory controls (adding, editing, deleting items), and promotion of users to administrators.
 - **Cloudinary Image Hosting**: Integrated Cloudinary hosting for game images. Uploads are handled in the cloud instead of local directories:
   - Automatic cleanup destroys old Cloudinary image assets when an administrator replaces a product image or deletes a product.
