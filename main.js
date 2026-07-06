@@ -12,7 +12,7 @@
   const express = require('express');
   const path = require('path');
   const bodyParser = require('body-parser');
-  const session = require('express-session');
+  const session = require('cookie-session');
   const helmet = require('helmet');
   const { redirectWithFlash } = require('./utils/flash');
 
@@ -41,15 +41,12 @@
   app.use(bodyParser.json());
 
   app.use(session({
-    secret: sessionSecret || 'dev-only-insecure-secret',
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      secure: isProduction,
-      httpOnly: true,
-      sameSite: 'lax',
-      maxAge: 24 * 60 * 60 * 1000
-    }
+    name: 'session',
+    keys: [sessionSecret || 'dev-only-insecure-secret'],
+    maxAge: 24 * 60 * 60 * 1000,
+    secure: isProduction,
+    httpOnly: true,
+    sameSite: 'lax'
   }));
 
   app.use(helmet({

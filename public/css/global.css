@@ -327,6 +327,41 @@ a:hover { color: var(--accent-hover); }
   .navbar .user-welcome {
     display: none;
   }
+
+  /* Relocated Mobile Auth styling inside the sliding drawer */
+  .navbar .nav-links .mobile-auth-item {
+    width: 100%;
+    padding: 0 2rem;
+    margin-top: 2rem !important;
+  }
+
+  .navbar .nav-links .auth-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    width: 100%;
+  }
+
+  .navbar .nav-links .auth-buttons .btn-login,
+  .navbar .nav-links .auth-buttons .btn-register {
+    display: block !important;
+    width: 100%;
+    text-align: center;
+    padding: 0.8rem;
+  }
+
+  .navbar .nav-links .user-welcome {
+    display: block !important;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+    text-align: center;
+  }
+
+  .navbar .nav-links .logout-form {
+    width: 100%;
+  }
 }
 
 @media screen and (max-width: 480px) {

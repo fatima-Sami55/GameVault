@@ -357,14 +357,9 @@ router.get('/register',redirectIfAuthenticated, async (req, res) => {
 });
 
 router.get('/logout', isAuthenticated, async (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      console.error('❌ Logout Error:', err);
-      return redirectWithFlash(res, '/', 'Could not log you out. Please try again.', 'error');
-    }
-    res.redirect('/');  // Redirect after logout
-    console.log('✅ Logged out');
-  });
+  req.session = null;
+  console.log('✅ Logged out');
+  res.redirect('/');
 });
 
 
