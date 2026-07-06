@@ -30,7 +30,7 @@ if (process.env.DB_AUTH_TYPE) {
 }
 
 const pool = new sql.ConnectionPool(config);
-const poolConnect = pool.connect()
+const originalPoolConnect = pool.connect()
   .then(() => {
     console.log('✅ Database Connected');
     return pool;
@@ -39,6 +39,28 @@ const poolConnect = pool.connect()
     console.error('❌ Database Connection Error:', err.message);
     return null;
   });
+
+const poolConnect = {
+  then: function(onResolve, onReject) {
+    if (pool.connected) {
+      return Promise.resolve(pool).then(onResolve, onReject);
+    }
+    if (pool.connecting) {
+      return originalPoolConnect.then(() => pool).then(onResolve, onReject);
+    }
+    console.log('🔄 Database connection is closed. Re-connecting pool...');
+    return pool.connect()
+      .then(() => {
+        console.log('✅ Database Re-connected Successfully');
+        return pool;
+      })
+      .catch((err) => {
+        console.error('❌ Database Re-connection Error:', err.message);
+        return null;
+      })
+      .then(onResolve, onReject);
+  }
+};
 
 pool.on('error', err => {
   console.error('❌ SQL error:', err.message);
