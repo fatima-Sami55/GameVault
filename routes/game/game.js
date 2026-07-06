@@ -23,8 +23,12 @@ router.get('/games', async (req, res) => {
         
         // Add genre filter
         if (genre) {
-            query += ' AND genre = @genre';
-            params.push({ name: 'genre', value: genre });
+            if (genre === 'RPG') {
+                query += " AND (LOWER(genre) LIKE '%rpg%' OR LOWER(genre) LIKE '%role-playing%')";
+            } else {
+                query += " AND LOWER(genre) LIKE '%' + LOWER(@genre) + '%'";
+                params.push({ name: 'genre', value: genre });
+            }
         }
         
         // Add price range filter

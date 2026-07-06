@@ -461,7 +461,14 @@ router.post('/register',redirectIfAuthenticated, async (req, res) => {
       VALUES (@uuid, @name, @email, @password, @phone_number)
     `);
 
-    console.log(`Registered: ${name}, successfully`);
+    req.session.user = {
+      uuid: userId,
+      name: name,
+      email: email,
+      role: 'user'
+    };
+
+    console.log(`Registered: ${name}, successfully and logged in`);
     res.redirect('/');
   } catch (err) {
     if (err.message && err.message.includes('Connection')) {
