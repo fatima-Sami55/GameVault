@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { pool } = require('../../database/db');
+const { pool, poolConnect } = require('../../database/db');
 
 // Render games page
 router.get('/', async (req, res) => {
@@ -10,6 +10,7 @@ router.get('/', async (req, res) => {
 // Get all games with optional filtering (API endpoint)
 router.get('/games', async (req, res) => {
     try {
+        await poolConnect;
         const { genre, priceRange, sortBy } = req.query;
         
         let query = `

@@ -9,6 +9,9 @@ async function fetchGames(queryString = '') {
         const url = queryString ? `/games/games?${queryString}` : '/games/games';
         
         const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`Server returned status ${response.status}`);
+        }
         const games = await response.json();
         displayGames(games);
     } catch (error) {

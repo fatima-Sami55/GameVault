@@ -367,9 +367,9 @@ a:hover { color: var(--accent-hover); }
 @media screen and (max-width: 480px) {
   .navbar .logo {
     font-size: 1.3rem;
-    max-width: 45%;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    max-width: none;
+    overflow: visible;
+    text-overflow: clip;
   }
 
   .navbar .nav-actions {

@@ -88,7 +88,8 @@ window.showToast = showToast;
   }
 
   function handleMobileAuthReposition() {
-    if (window.innerWidth <= 768) {
+    const isMobile = window.matchMedia('(max-width: 992px)').matches;
+    if (isMobile) {
       if (authButtons && navLinks && !document.querySelector('.mobile-auth-item')) {
         const li = document.createElement('li');
         li.className = 'mobile-auth-item';

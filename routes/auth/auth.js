@@ -288,6 +288,7 @@ router.get('/products/edit/:id', isAuthenticated, isAdmin, async (req, res) => {
     const id = req.params.id;
 
     try {
+        await poolConnect;
         const result = await pool.request()
             .input('id', sql.Int, id)
             .query('SELECT * FROM Product WHERE pid = @id');
@@ -310,6 +311,7 @@ router.post('/products/edit/:id', isAuthenticated, isAdmin, upload.single('img')
     const image = req.file ? req.file.path : req.body.img; 
 
     try {
+        await poolConnect;
         let oldImageUrl = null;
         if (req.file) {
             const oldProductResult = await pool.request()

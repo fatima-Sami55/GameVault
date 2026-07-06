@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const sql = require('mssql');
-const { pool } = require('../../database/db');
+const { pool, poolConnect } = require('../../database/db');
 const { redirectWithFlash } = require('../../utils/flash');
 
 // Middleware to check if user is authenticated
@@ -9,7 +9,7 @@ const isAuthenticated = (req, res, next) => {
     if (req.session.user) {
         return next();
     }
-    if (req.accepts('html') && !req.xhr) {
+    if (req.path === '/' && req.accepts('html') && !req.xhr) {
         return redirectWithFlash(res, '/login', 'Please login first.', 'error');
     }
     res.status(401).json({ error: 'Please login first' });
@@ -23,6 +23,7 @@ router.get('/', isAuthenticated, (req, res) => {
 // Get user's cart (API endpoint)
 router.get('/cart', isAuthenticated, async (req, res) => {
     try {
+        await poolConnect;
         // Ensure user_id exists in session
         if (!req.session.user || !req.session.user.uuid) {
             return res.status(401).json({ error: 'User not authenticated' });
@@ -72,6 +73,7 @@ router.get('/cart', isAuthenticated, async (req, res) => {
 // Add item to cart
 router.post('/add', isAuthenticated, async (req, res) => {
     try {
+        await poolConnect;
         // Ensure user_id exists in session
         if (!req.session.user || !req.session.user.uuid) {
             return res.status(401).json({ error: 'User not authenticated' });
@@ -137,6 +139,7 @@ router.post('/add', isAuthenticated, async (req, res) => {
 // Update cart item quantity
 router.put('/update', isAuthenticated, async (req, res) => {
     try {
+        await poolConnect;
         const { pid, quantity } = req.body;
         const userId = req.session.user.uuid;
 
@@ -180,6 +183,7 @@ router.put('/update', isAuthenticated, async (req, res) => {
 // Remove item from cart
 router.delete('/remove/:pid', isAuthenticated, async (req, res) => {
     try {
+        await poolConnect;
         const { pid } = req.params;
         const userId = req.session.user.uuid;
 
@@ -218,6 +222,7 @@ router.delete('/remove/:pid', isAuthenticated, async (req, res) => {
 // Clear cart
 router.delete('/clear', isAuthenticated, async (req, res) => {
     try {
+        await poolConnect;
         const userId = req.session.user.uuid;
 
         // Get user's cart
